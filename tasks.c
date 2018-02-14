@@ -5,7 +5,9 @@ int leftEncoderTarget = 0;
 bool rightEncoderReached = false;
 bool leftEncoderReched = false;
 int targetLiftPosition = 0;
-int highLiftPosition = 1;
+int leftLiftPosition = 1;
+int rightLiftPosition = 1;
+int highLiftSpeed;
 
 task lineLeftTest(){
 while(true){
@@ -148,42 +150,59 @@ void strait(int leftTarget, int rightTarget){
 
 
 //LIFT CONTOL TASKS
+//controls the left side of the high lift
 task leftHighLift(){
 			if(targetLiftPosition == 3){ //Hight state
 				//goes up
 				while(SensorValue[liftAngleLeft] < 4000){
-					motor[liftMobileHigherLeft] = 127;
+					motor[liftMobileHigherLeft] = highLiftSpeed;
 
 				}
-				motor[liftMobileHigherLeft] = 127;
-				highLiftPosition = 3;
+				motor[liftMobileHigherLeft] = 0;
+				leftLiftPosition = 3;
 			}
 		else if(targetLiftPosition == 1){
 			//goes down
 			while(SensorValue[liftAngleLeft] > 3000){
-				motor[liftMobileHigherLeft] = -127;
+				motor[liftMobileHigherLeft] = -highLiftSpeed;
 			}
-			highLiftPosition = 1;
+			leftLiftPosition = 1;
 			motor[liftMobileHigherLeft] = 0;
 		}
 }
 
+
+//controls the right side of the high lift
 task rightHighLift(){
 			if(targetLiftPosition == 3){ //Hight state
 				//goes up
 				while(SensorValue[liftAngleRight] > 2000){
-					motor[liftMobileHigherRight] = 127;
+					motor[liftMobileHigherRight] = highLiftSpeed;
 
 				}
-				motor[liftMobileHigherRight] = 127;
-				highLiftPosition = 3;
+				motor[liftMobileHigherRight] = 0;
+				rightLiftPosition = 3;
 			}
 		else if(targetLiftPosition == 1){
 			//goes down
 			while(SensorValue[liftAngleRight] < 2200){
-				motor[liftMobileHigherRight] = -127;
+				motor[liftMobileHigherRight] = -highLiftSpeed;
 			}
-			highLiftPosition = 1;
+			rightLiftPosition = 1;
 			motor[liftMobileHigherRight] = 0;
 		}
+}
+
+
+//start function for lift
+void lift(int targetHight, int speed){
+	targetLiftPosition = targetHight;
+	highLiftSpeed = speed;
+	startTask(rightHighLift);
+	startTask(leftHighLift);
+
+	waitUntil(rightLiftPosition == targetLiftPosition && leftLiftPosition == targetLiftPosition);
+	stopTask(rightHighLift);
+	stopTask(leftHighLift);
+	return;
 }

@@ -181,6 +181,16 @@ task autonomous()
 		autonomous1();
 		}else if (Program == 2){
 
+		//////////////////////////////////////////////////
+		//            testing zone for now             //
+		/////////////////////////////////////////////////
+
+
+		//run the lift until position three, at power level 30
+		lift(3, 30);
+
+
+
 		}
 
 
@@ -208,7 +218,7 @@ task usercontrol()
 
 	bool coneGate = false;
 	bool mobileForward = true;
-
+	int highLiftPosition = 1;
 
 
 
