@@ -208,7 +208,7 @@ task usercontrol()
 
 	bool coneGate = false;
 	bool mobileForward = true;
-	int highLiftPosition = 1;
+
 
 
 

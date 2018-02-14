@@ -4,7 +4,8 @@ int rightEncoderTarget = 0;
 int leftEncoderTarget = 0;
 bool rightEncoderReached = false;
 bool leftEncoderReched = false;
-
+int targetLiftPosition = 0;
+int highLiftPosition = 1;
 
 task lineLeftTest(){
 while(true){
@@ -143,4 +144,46 @@ void strait(int leftTarget, int rightTarget){
 		stopTask(rightForwardEncoderTest);
 		stopTask(leftForwardEncoderTest);
 		return;
+}
+
+
+//LIFT CONTOL TASKS
+task leftHighLift(){
+			if(targetLiftPosition == 3){ //Hight state
+				//goes up
+				while(SensorValue[liftAngleLeft] < 4000){
+					motor[liftMobileHigherLeft] = 127;
+
+				}
+				motor[liftMobileHigherLeft] = 127;
+				highLiftPosition = 3;
+			}
+		else if(targetLiftPosition == 1){
+			//goes down
+			while(SensorValue[liftAngleLeft] > 3000){
+				motor[liftMobileHigherLeft] = -127;
+			}
+			highLiftPosition = 1;
+			motor[liftMobileHigherLeft] = 0;
+		}
+}
+
+task rightHighLift(){
+			if(targetLiftPosition == 3){ //Hight state
+				//goes up
+				while(SensorValue[liftAngleRight] > 2000){
+					motor[liftMobileHigherRight] = 127;
+
+				}
+				motor[liftMobileHigherRight] = 127;
+				highLiftPosition = 3;
+			}
+		else if(targetLiftPosition == 1){
+			//goes down
+			while(SensorValue[liftAngleRight] < 2200){
+				motor[liftMobileHigherRight] = -127;
+			}
+			highLiftPosition = 1;
+			motor[liftMobileHigherRight] = 0;
+		}
 }
