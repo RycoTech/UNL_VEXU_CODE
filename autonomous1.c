@@ -24,24 +24,13 @@ void autonomous1(){
 		motor[driveTrainRight]=50;
 
 			//when the goal is lifted- cut the motors
-		if(SensorValue[liftAngleLeft] > 4000){
-			motor[liftMobileHigherLeft] = 0;
-		}
-		if(SensorValue[liftAngleRight] < 2000){
-			motor[liftMobileHigherRight] = 0;
-		}
+		highLift(3, 127);
 
 			//wait until lower the lower goal is ready
 		waitUntil(SensorValue[mobleGoalLower] == 1);
-		motor[liftMobileLowerLeft] = 127;
-		motor[liftMobileLowerRight] = 127;
+		startTask(LowLiftUp);
 		motor[driveTrainLeft]=127;
 		motor[driveTrainRight]=127;
-
-			//wait for lift to go up
-		waitUntil(SensorValue[lowerMobileGoalLimit]== 1);
-		motor[liftMobileLowerLeft] =0;
-		motor[liftMobileLowerRight] =0;
 
 
 			//stop when it reaches the line
@@ -66,16 +55,31 @@ void autonomous1(){
 		wait10Msec(100);
 
 			//Forward into 10pt zone
-		motor[liftMobileHigherLeft] = -70;
-		motor[liftMobileHigherRight] = -72;
 		strait(-425,-425);
-		motor[liftMobileHigherLeft] = 0;
-		motor[liftMobileHigherRight] = 0;
+		highLift(2, 60);
 		wait10Msec(100);
+
+
+
+		//score the moble goals
+		motor[liftMobileLowerLeft] = -30;
+		motor[liftMobileLowerRight] = -30;
+		wait10Msec(1);
+		motor[liftMobileLowerLeft] = 0;
+		motor[liftMobileLowerRight] = 0;
+
 
 			//Backward out of 10pt zone
 		strait(425,425);
 		wait10Msec(100);
+
+																																	//part 2
+
+
+		//reset lifts
+		startTask(leftLowLiftDown);
+		startTask(rightLowLiftDown);
+		highLift(1, 127);
 
 			//135 degree turn left
 		turnLeft(750, -750);
@@ -101,26 +105,14 @@ void autonomous1(){
 			//decrease drive speed
 		motor[driveTrainLeft]=50;
 		motor[driveTrainRight]=50;
+		highLift(3, 127);
 
-			//when the goal is lifted- cut the motors
-		if(SensorValue[liftAngleLeft] > 4000){
-			motor[liftMobileHigherLeft] = 0;
-		}
-		if(SensorValue[liftAngleRight] < 2000){
-			motor[liftMobileHigherRight] = 0;
-		}
 
 			//wait until lower the lower goal is ready
 		waitUntil(SensorValue[mobleGoalLower] == 1);
-		motor[liftMobileLowerLeft] = 127;
-		motor[liftMobileLowerRight] = 127;
+		startTask(LowLiftUp);
 		motor[driveTrainLeft]=127;
 		motor[driveTrainRight]=127;
-
-			//wait for lift to go up
-		waitUntil(SensorValue[lowerMobileGoalLimit]== 1);
-		motor[liftMobileLowerLeft] =0;
-		motor[liftMobileLowerRight] =0;
 
 
 			//stop when it reaches the line
@@ -145,12 +137,10 @@ void autonomous1(){
 		wait10Msec(100);
 
 			//Forward into 10pt zone
-		motor[liftMobileHigherLeft] = -70;
-		motor[liftMobileHigherRight] = -72;
+		highLift(2, 127);
 		strait(-425,-425);
-		motor[liftMobileHigherLeft] = 0;
-		motor[liftMobileHigherRight] = 0;
 		wait10Msec(100);
+
 
 			//Backward out of 10pt zone
 		strait(425,425);

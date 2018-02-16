@@ -13,7 +13,9 @@
 #pragma config(Sensor, dgtl5,  mobleGoalHigher, sensorTouch)
 #pragma config(Sensor, dgtl6,  rightEncoder,   sensorQuadEncoder)
 #pragma config(Sensor, dgtl8,  leftEncoder,    sensorQuadEncoder)
-#pragma config(Sensor, dgtl10, lowerMobileGoalLimit, sensorTouch)
+#pragma config(Sensor, dgtl10, lowerMobileGoalLimitUP, sensorTouch)
+#pragma config(Sensor, dgtl11, leftLowMGDown,  sensorTouch)
+#pragma config(Sensor, dgtl12, rightLowMGDown, sensorTouch)
 #pragma config(Sensor, I2C_1,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Sensor, I2C_2,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign )
 #pragma config(Sensor, I2C_4,  ,               sensorQuadEncoderOnI2CPort,    , AutoAssign )
@@ -186,8 +188,7 @@ task autonomous()
 		/////////////////////////////////////////////////
 
 
-		//run the lift until position three, at power level 30
-		lift(3, 30);
+		strait(425,425);
 
 
 
@@ -296,12 +297,12 @@ task usercontrol()
 		if(vexRT[Btn7U]){ //Hight state
 			//goes up
 			highLiftPosition = 3;
-			if(SensorValue[liftAngleLeft] > 4000){
+			if(SensorValue[liftAngleLeft] > 3030){
 				motor[liftMobileHigherLeft] = 0;
 				}else{
 				motor[liftMobileHigherLeft] = 127;
 			}
-			if(SensorValue[liftAngleRight] < 2000){
+			if(SensorValue[liftAngleRight] < 910){
 				motor[liftMobileHigherRight] = 0;
 				}else{
 				motor[liftMobileHigherRight] = 127;
@@ -310,7 +311,7 @@ task usercontrol()
 		else if(vexRT[Btn7D]){
 			//goes down
 			highLiftPosition = 1;
-			if(SensorValue[liftAngleLeft] < 3000){
+			if(SensorValue[liftAngleLeft] < 1270){
 				motor[liftMobileHigherLeft] = 0;
 				}else{
 				motor[liftMobileHigherLeft] = -127;
@@ -325,12 +326,12 @@ task usercontrol()
 			motor[liftMobileHigherLeft] = 0;
 		}
 
-		/*
+
 		if(vexRT[Btn7L] && highLiftPosition == 3){ //middle state going down
 		motor[liftMobileHigherLeft] = -127;
 		motor[liftMobileHigherRight] = -127;
 		highLiftPosition = 2;
-		if(SensorValue[liftAngleLeft] < 3743){
+		if(SensorValue[liftAngleLeft] < 1940){
 		motor[liftMobileHigherLeft] = 0;
 		}
 		if(SensorValue[liftAngleRight] > 1955){
@@ -340,7 +341,7 @@ task usercontrol()
 		motor[liftMobileHigherLeft] = 127;
 		motor[liftMobileHigherRight] = 127;
 		highLiftPosition = 2;
-		if(SensorValue[liftAngleLeft] > 3743){
+		if(SensorValue[liftAngleLeft] > 1940){
 		motor[liftMobileHigherLeft] = 0;
 		}
 		if(SensorValue[liftAngleRight] < 1955){
@@ -348,7 +349,7 @@ task usercontrol()
 		}
 		}
 
-		*/
+
 
 
 		if(vexRT[Btn8D] == 1 && coneGate == false){

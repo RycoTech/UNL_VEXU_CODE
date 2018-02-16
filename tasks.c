@@ -10,6 +10,7 @@ int rightLiftPosition = 1;
 int highLiftSpeed;
 
 task lineLeftTest(){
+	leftLineReached = false;
 while(true){
   	if(SensorValue[frontLeftLine] < 2000){
  			motor[driveTrainLeft] = 0;
@@ -21,7 +22,7 @@ while(true){
 
 
 task lineRightTest(){
-
+rightLineReached = false;
 	while(true){
   	if(SensorValue[frontRightLine] < 2000){
  			motor[driveTrainRight] = 0;
@@ -135,6 +136,7 @@ void strait(int leftTarget, int rightTarget){
 		rightEncoderTarget = rightTarget;
 		leftEncoderTarget = leftTarget;
 
+		if(leftTarget < 0 && rightTarget < 0){
 		//set motors in proper direction
 		motor[driveTrainLeft] = 127;
 		motor[driveTrainRight] = 127;
@@ -146,6 +148,20 @@ void strait(int leftTarget, int rightTarget){
 		stopTask(rightForwardEncoderTest);
 		stopTask(leftForwardEncoderTest);
 		return;
+	}
+	else if(leftTarget > 0 && rightTarget > 0)
+		//set motors in proper direction
+		motor[driveTrainLeft] = -127;
+		motor[driveTrainRight] = -127;
+
+		//when the encoders return the results, then stop the tasks, and end the function
+		startTask(rightBackwardEncoderTest);
+		startTask(leftBackwardEncoderTest);
+		waitUntil(rightEncoderReached == true && leftEncoderReched == true);
+		stopTask(rightBackwardEncoderTest);
+		stopTask(leftBackwardEncoderTest);
+		return;
+
 }
 
 
@@ -154,20 +170,29 @@ void strait(int leftTarget, int rightTarget){
 task leftHighLift(){
 			if(targetLiftPosition == 3){ //Hight state
 				//goes up
-				while(SensorValue[liftAngleLeft] < 4000){
-					motor[liftMobileHigherLeft] = highLiftSpeed;
-
-				}
+				motor[liftMobileHigherLeft] = highLiftSpeed;
+				waitUntil(SensorValue[liftAngleLeft] > 3030);
 				motor[liftMobileHigherLeft] = 0;
 				leftLiftPosition = 3;
 			}
 		else if(targetLiftPosition == 1){
 			//goes down
-			while(SensorValue[liftAngleLeft] > 3000){
-				motor[liftMobileHigherLeft] = -highLiftSpeed;
-			}
+			motor[liftMobileHigherLeft] = -highLiftSpeed;
+			waitUntil(SensorValue[liftAngleLeft] < 1270);
 			leftLiftPosition = 1;
 			motor[liftMobileHigherLeft] = 0;
+		}
+
+		else if(leftLiftPosition == 3 && targetLiftPosition == 2){ //middle state going down
+		motor[liftMobileHigherLeft] = -highLiftSpeed;
+		waitUntil(SensorValue[liftAngleLeft] < 1940);
+		motor[liftMobileHigherLeft] = 0;
+		leftLiftPosition = 2;
+		}else if(leftLiftPosition == 1 && targetLiftPosition == 2 ){ //middle state going up
+		motor[liftMobileHigherLeft] = highLiftSpeed;
+		waitUntil(SensorValue[liftAngleLeft] > 1940);
+		motor[liftMobileHigherLeft] = 0;
+		leftLiftPosition = 2;
 		}
 }
 
@@ -176,28 +201,37 @@ task leftHighLift(){
 task rightHighLift(){
 			if(targetLiftPosition == 3){ //Hight state
 				//goes up
-				while(SensorValue[liftAngleRight] > 2000){
-					motor[liftMobileHigherRight] = highLiftSpeed;
-
-				}
+				motor[liftMobileHigherRight] = highLiftSpeed;
+				waitUntil(SensorValue[liftAngleRight] < 910);
 				motor[liftMobileHigherRight] = 0;
 				rightLiftPosition = 3;
 			}
 		else if(targetLiftPosition == 1){
 			//goes down
-			while(SensorValue[liftAngleRight] < 2200){
-				motor[liftMobileHigherRight] = -highLiftSpeed;
-			}
+			motor[liftMobileHigherRight] = -highLiftSpeed;
+			waitUntil(SensorValue[liftAngleRight] > 2200);
 			rightLiftPosition = 1;
 			motor[liftMobileHigherRight] = 0;
 		}
+		else if(rightLiftPosition == 3 && targetLiftPosition == 2){ //middle state going down
+		motor[liftMobileHigherRight] = -highLiftSpeed;
+		waitUntil(SensorValue[liftAngleRight] > 1955);
+		motor[liftMobileHigherRight] = 0;
+		rightLiftPosition = 2;
+		}else if(rightLiftPosition == 1 && targetLiftPosition == 2){ //middle state going up
+		motor[liftMobileHigherRight] = highLiftSpeed;
+		waitUntil(SensorValue[liftAngleRight] < 1955);
+		motor[liftMobileHigherRight] = 0;
+		rightLiftPosition = 2;
+		}
+
 }
 
 
 //start function for lift
-void lift(int targetHight, int speed){
-	targetLiftPosition = targetHight;
+void highLift(int targetHight,int speed){
 	highLiftSpeed = speed;
+	targetLiftPosition = targetHight;
 	startTask(rightHighLift);
 	startTask(leftHighLift);
 
@@ -205,4 +239,29 @@ void lift(int targetHight, int speed){
 	stopTask(rightHighLift);
 	stopTask(leftHighLift);
 	return;
+}
+
+task LowLiftUp(){
+	while(SensorValue[lowerMobileGoalLimitUP] == 0){
+		motor[liftMobileLowerLeft] = 127;
+		motor[liftMobileLowerRight] = 127;
+	}
+	motor[liftMobileLowerLeft] = 0;
+	stopTask(LowLiftUp);
+}
+
+task leftLowLiftDown(){
+	while(SensorValue[leftLowMGDown] == 0){
+		motor[liftMobileLowerLeft] = -30;
+	}
+	motor[liftMobileLowerLeft] = 0;
+	stopTask(leftLowLiftDown);
+}
+
+task rightLowLiftDown(){
+	while(SensorValue[rightLowMGDown] == 0){
+		motor[liftMobileLowerRight] = -30;
+	}
+	motor[liftMobileLowerRight] = 0;
+	stopTask(rightLowLiftDown);
 }
