@@ -6,8 +6,8 @@
 #pragma config(Sensor, in5,    frontLeftLine,  sensorLineFollower)
 #pragma config(Sensor, in6,    backRightLine,  sensorLineFollower)
 #pragma config(Sensor, in7,    frontRightLine, sensorLineFollower)
-#pragma config(Sensor, dgtl1,  extendLeft,     sensorDigitalOut)
-#pragma config(Sensor, dgtl2,  extendRight,    sensorDigitalOut)
+#pragma config(Sensor, dgtl1,  extendConeLift, sensorDigitalOut)
+#pragma config(Sensor, dgtl2,  ,               sensorDigitalOut)
 #pragma config(Sensor, dgtl3,  coneGate,       sensorDigitalOut)
 #pragma config(Sensor, dgtl4,  mobleGoalLower, sensorTouch)
 #pragma config(Sensor, dgtl5,  mobleGoalHigher, sensorTouch)
@@ -84,7 +84,7 @@ void pre_auton()
 	//This keeps track of which program you want to run
 	int lcdScreen = 1;
 	//Change this value to be the maximum number of programs you want on the robot
-	int lcdScreenMax = 2;
+	int lcdScreenMax = 3;
 	//Turns on the Backlight
 	bLCDBacklight = true;
 
@@ -138,7 +138,7 @@ void pre_auton()
 			displayLCDCenteredString (0, "Program"); //We use brackets to mark which program we have chosen
 			displayLCDCenteredString (1, "[2]"); //So that while we're scrolling, we can have one marked
 			} else if (lcdScreen == 3 && Program != 3) {
-			displayLCDCenteredString (0, "Program"); //Name the third program here
+			displayLCDCenteredString (0, "Pneumatics"); //Name the third program here
 			displayLCDCenteredString (1, "3"); //Name the third program here
 			if (nLCDButtons == centerButton) {
 				Program = lcdScreen; //Sets the Program to the one on-screen
@@ -147,7 +147,7 @@ void pre_auton()
 				wait1Msec(1500);
 			}
 			} else if (lcdScreen == 3 && Program == 3) {
-			displayLCDCenteredString (0, "Program"); //We use brackets to mark which program we have chosen
+			displayLCDCenteredString (0, "Pneumatics"); //We use brackets to mark which program we have chosen
 			displayLCDCenteredString (1, "[3]"); //So that while we're scrolling, we can have one marked
 			} else if (lcdScreen == 4 && Program != 4) {
 			displayLCDCenteredString (0, "Program"); //Name the fourth program here
@@ -187,10 +187,27 @@ task autonomous()
 		//            testing zone for now             //
 		/////////////////////////////////////////////////
 
+			displayLCDCenteredString(0, "Test autonomous");
+			displayLCDCenteredString(1, "running...");
 
-		strait(425,425);
+
+		motor[liftMobileHigherLeft] = -127;
+		motor[liftMobileHigherRight] = -127;
+		wait1Msec(500);
+		motor[liftMobileHigherLeft] = 0;
+		motor[liftMobileHigherRight] = 0;
 
 
+			displayLCDCenteredString(0, "Test autonomous");
+			displayLCDCenteredString(1, "Done!");
+
+		//////////////////////////////////////////////////
+		}else if (Program == 3){
+			if(SensorValue[extendConeLift] == 1){
+				SensorValue[extendConeLift] = 0;
+			}else{
+				SensorValue[extendConeLift] = 1;
+			}
 
 		}
 
@@ -213,8 +230,6 @@ task usercontrol()
 
 
 	//logic variables
-	SensorValue[extendLeft] = 1;
-	SensorValue[extendRight] = 1;
 
 
 	bool coneGate = false;
@@ -295,35 +310,12 @@ task usercontrol()
 
 		//High lift
 		if(vexRT[Btn7U]){ //Hight state
-			//goes up
-			highLiftPosition = 3;
-			if(SensorValue[liftAngleLeft] > 3030){
-				motor[liftMobileHigherLeft] = 0;
-				}else{
-				motor[liftMobileHigherLeft] = 127;
-			}
-			if(SensorValue[liftAngleRight] < 910){
-				motor[liftMobileHigherRight] = 0;
-				}else{
-				motor[liftMobileHigherRight] = 127;
-			}
+			highLift(3, 127);
 		}
 		else if(vexRT[Btn7D]){
-			//goes down
-			highLiftPosition = 1;
-			if(SensorValue[liftAngleLeft] < 1270){
-				motor[liftMobileHigherLeft] = 0;
-				}else{
-				motor[liftMobileHigherLeft] = -127;
-			}
-			if(SensorValue[liftAngleRight] > 2200){
-				motor[liftMobileHigherRight] = 0;
-				}else{
-				motor[liftMobileHigherRight] = -127;
-			}
-			}else{
-			motor[liftMobileHigherRight] = 0;
-			motor[liftMobileHigherLeft] = 0;
+			highLift(1, 127);
+		}else if(vexRT(Btn7L)){
+			highLift(2, 127);
 		}
 
 

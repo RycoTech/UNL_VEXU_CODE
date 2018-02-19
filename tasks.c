@@ -64,7 +64,7 @@ task leftBackwardEncoderTest(){
 
 
 void turnLeft(int leftTarget, int rightTarget){
-		displayLCDCenteredString(1, "turning");
+
 
 		//reset encoder results flag
 		rightEncoderReached = false;
@@ -247,6 +247,7 @@ task LowLiftUp(){
 		motor[liftMobileLowerRight] = 127;
 	}
 	motor[liftMobileLowerLeft] = 0;
+	motor[liftMobileLowerRight] = 0;
 	stopTask(LowLiftUp);
 }
 
