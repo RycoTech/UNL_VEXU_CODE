@@ -84,7 +84,7 @@ void pre_auton()
 	//This keeps track of which program you want to run
 	int lcdScreen = 1;
 	//Change this value to be the maximum number of programs you want on the robot
-	int lcdScreenMax = 3;
+	int lcdScreenMax = 2;
 	//Turns on the Backlight
 	bLCDBacklight = true;
 
@@ -104,15 +104,24 @@ void pre_auton()
 				wait1Msec(250);
 			}
 		}
-		if (nLCDButtons == rightButton) { //Scrolls to the right
-			if (lcdScreenMax == lcdScreen) {
-				lcdScreen = lcdScreenMin;
-				wait1Msec(250);
-				} else {
-				lcdScreen++;
-				wait1Msec(250);
+
+
+		if (nLCDButtons == rightButton) { //cycles pnumatics
+			if(SensorValue[extendConeLift] == 1){
+				SensorValue[extendConeLift] = 0;
+			}else{
+				SensorValue[extendConeLift] = 1;
 			}
+
+
+
+
+
 		}
+
+
+
+
 		if (lcdScreen == 1 && Program != 1) {
 			displayLCDCenteredString (0, "Program"); //Name the first program here
 			displayLCDCenteredString (1, "1"); //Name the first program here
@@ -203,11 +212,7 @@ task autonomous()
 
 		//////////////////////////////////////////////////
 		}else if (Program == 3){
-			if(SensorValue[extendConeLift] == 1){
-				SensorValue[extendConeLift] = 0;
-			}else{
-				SensorValue[extendConeLift] = 1;
-			}
+
 
 		}
 
@@ -276,35 +281,15 @@ task usercontrol()
 		if(vexRT[Btn8U]){
 			//goes up
 
-			motor[liftMobileLowerLeft] = 127;
-			motor[liftMobileLowerRight] = 127;
+			startTask(LowLiftUp);
 
-			/* potential code for moving lower moble goal up (NEEDS TARGET)
-			setMotorTarget(liftMobileLowerLeft, nEncoderCountTarget, 127, true);
-			setMotorTarget(liftMobileLowerRight, nEncoderCountTarget, 127, true);
-			moveMotorTarget(liftMobileLowerLeft, nEncoderCountTarget, 127, true);
-			moveMotorTarget(liftMobileLowerRight, nEncoderCountTarget, 127, true);
-			*/
 
 			}else if(vexRT[Btn8R]){
 			//goes down
 
-			motor[liftMobileLowerLeft] = -127;
-			motor[liftMobileLowerRight] = -127;
-
-
-			/* potential code for moving lower moble goal down (NEEDS TARGET)
-			setMotorTarget(liftMobileLowerLeft, nEncoderCountTarget, -127, true);
-			setMotorTarget(liftMobileLowerRight, nEncoderCountTarget, -127, true);
-			moveMotorTarget(liftMobileLowerLeft, nEncoderCountTarget, -127, true);
-			moveMotorTarget(liftMobileLowerRight, nEncoderCountTarget, -127, true);
-			*/
-
-
-			}else{
-			motor[liftMobileLowerLeft] = 0;
-			motor[liftMobileLowerRight] = 0;
-		}
+			startTask(leftLowLiftDown);
+			startTask(rightLowLiftDown);
+			}
 
 
 
