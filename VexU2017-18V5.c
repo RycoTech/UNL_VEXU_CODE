@@ -7,7 +7,7 @@
 #pragma config(Sensor, in6,    backRightLine,  sensorLineFollower)
 #pragma config(Sensor, in7,    frontRightLine, sensorLineFollower)
 #pragma config(Sensor, dgtl1,  extendConeLift, sensorDigitalOut)
-#pragma config(Sensor, dgtl2,  ,               sensorDigitalOut)
+#pragma config(Sensor, dgtl2,  pipeSensor,     sensorTouch)
 #pragma config(Sensor, dgtl3,  coneGate,       sensorDigitalOut)
 #pragma config(Sensor, dgtl4,  mobleGoalLower, sensorTouch)
 #pragma config(Sensor, dgtl5,  mobleGoalHigher, sensorTouch)
@@ -88,8 +88,7 @@ void pre_auton()
 	//Turns on the Backlight
 	bLCDBacklight = true;
 
-	//Copied from someone's sample code because the documentation for RobotC won't tell me anything useful
-	//These should logically work, but I'm not 100% sure
+
 	const short leftButton = 1;
 	const short centerButton = 2;
 	const short rightButton = 4;
@@ -304,7 +303,7 @@ task usercontrol()
 		}
 
 
-		if(vexRT[Btn7L] && highLiftPosition == 3){ //middle state going down
+		/*if(vexRT[Btn7L] && highLiftPosition == 3){ //middle state going down
 		motor[liftMobileHigherLeft] = -127;
 		motor[liftMobileHigherRight] = -127;
 		highLiftPosition = 2;
@@ -324,7 +323,7 @@ task usercontrol()
 		if(SensorValue[liftAngleRight] < 1955){
 		motor[liftMobileHigherRight] = 0;
 		}
-		}
+		}*/
 
 
 
