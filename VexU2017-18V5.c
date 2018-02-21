@@ -198,12 +198,16 @@ task autonomous()
 			displayLCDCenteredString(0, "Test autonomous");
 			displayLCDCenteredString(1, "running...");
 
+			if(
+			if (SensorValue[coneGate] == 1)
+      {
+        SensorValue[coneGate] = 0;
+      }
+      else
+      {
+        SensorValue[coneGate] = 1;
+      }
 
-		motor[liftMobileHigherLeft] = -127;
-		motor[liftMobileHigherRight] = -127;
-		wait1Msec(500);
-		motor[liftMobileHigherLeft] = 0;
-		motor[liftMobileHigherRight] = 0;
 
 
 			displayLCDCenteredString(0, "Test autonomous");
@@ -330,12 +334,12 @@ task usercontrol()
 
 		if(vexRT[Btn8D] == 1 && coneGate == false){
 			//Activates Cone Lift Pneumatics
-			SensorValue[coneGate] = 1;
+			SensorValue[coneGate] = 0;
 			coneGate = true;
 		}
 		else if(vexRT[Btn8D] == 1 && coneGate == true){
 			//Deactivates Cone Lift Pneumatics
-			SensorValue[coneGate] = 0;
+			SensorValue[coneGate] = 1;
 			coneGate = false;
 		}
 
