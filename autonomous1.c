@@ -32,7 +32,7 @@ void autonomous1(){
 
 			//when it picks up the goal
 		waitUntil(SensorValue[mobleGoalHigher] == 1);
-		SensorValue[coneGate] = 1;
+		SensorValue[dgtl3] = 1;
 		motor[liftMobileHigherLeft] = 127;
 		motor[liftMobileHigherRight] = 127;
 
@@ -83,7 +83,7 @@ void autonomous1(){
 		wait1Msec(800);
 		motor[liftMobileHigherLeft] = 0;
 		motor[liftMobileHigherRight] = 0;
-		SensorValue[coneGate] = 0;
+		SensorValue[dgtl3] = 0;
 
 
 
