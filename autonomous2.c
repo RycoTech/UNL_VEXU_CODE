@@ -25,20 +25,21 @@ void autonomous2(){
 
 		//when it picks up the goal
 		waitUntil(SensorValue[mobleGoalHigher] == 1);
-
+		wait1Msec(050);
 		motor[driveTrainLeft] = 0;
 		motor[driveTrainRight] = 0;
 
 		motor[liftMobileHigherLeft] = 127;
 		motor[liftMobileHigherRight] = 127;
 
-		wait1Msec(400);
+		wait1Msec(350);
 		SensorValue[dgtl3] = 1;
 
 			//when the goal is lifted- cut the motors
 		highLift(3, 127);
 
 		//Backward
+		strait(500, 500);
 
 		motor[driveTrainLeft]=-127;
 		motor[driveTrainRight]=-127;
@@ -51,7 +52,10 @@ void autonomous2(){
 		stopTask(lineLeftTest);
 		stopTask(lineRightTest);
 
-		wait1Msec(500);
+		//small jolt forwad/kill momentum
+		motor[driveTrainLeft]=127;
+		motor[driveTrainRight]=127;
+		wait1Msec(050);
 
 		//continue back to 5 pt line
 		motor[driveTrainLeft]=-127;
@@ -60,50 +64,80 @@ void autonomous2(){
 		//stop when 5pt line reached
 		startTask(lineLeftTest);
 		startTask(lineRightTest);
-
+		waitUntil(rightLineReached == true);
+		motor[driveTrainRight]=127;
+		wait1Msec(100);
+		motor[driveTrainRight]=0;
 		waitUntil(leftLineReached == true && rightLineReached == true);
 		stopTask(lineLeftTest);
 		stopTask(lineRightTest);
+		wait1Msec(500);
 
+		//go forward
+		strait(-070, -070);
 		wait1Msec(500);
 
 		//90 degree turn left
 		//(left target, right target)
-		turnLeft(475, -475);
+		turnLeft(290, -290);
 		wait1Msec(500);
 
 		//go forward
-		strait(-600, -600);
+		strait(-1000, -1000);
 		wait1Msec(500);
 
 		//45 degree turn right
-		turnRight(-250, 250);
-		wait1Msec(500);
+		turnRight(-80, 80);
+		wait1Msec(1500);
 
 		//start going forward
 		motor[driveTrainLeft]=127;
 		motor[driveTrainRight]=127;
 
-		//wait until the lower goal is ready
+		//wait until lower the lower goal is ready
 		waitUntil(SensorValue[mobleGoalLower] == 1);
-		motor[driveTrainLeft] = 0;
-		motor[driveTrainRight] = 0;
 		startTask(LowLiftUp);
-		waitUntil(SensorValue[lowerMobileGoalLimitUP] == 1);
+		motor[driveTrainLeft]=0;
+		motor[driveTrainRight]=0;
+		wait1Msec(1200);
 
 		//Backward
-		strait(700,700);
+		strait(500, 500);
 
 		motor[driveTrainLeft]=-127;
 		motor[driveTrainRight]=-127;
 
-		//stop when it reaches the line
+		//stop when it reaches the autoloader line
 		startTask(lineLeftTest);
 		startTask(lineRightTest);
 
 		waitUntil(leftLineReached == true && rightLineReached == true);
 		stopTask(lineLeftTest);
 		stopTask(lineRightTest);
+
+		//small jolt forwad/kill momentum
+		motor[driveTrainLeft]=127;
+		motor[driveTrainRight]=127;
+		wait1Msec(050);
+
+		//continue back to 5 pt line
+		motor[driveTrainLeft]=-127;
+		motor[driveTrainRight]=-127;
+
+		//stop when 5pt line reached
+		startTask(lineLeftTest);
+		startTask(lineRightTest);
+		waitUntil(rightLineReached == true);
+		motor[driveTrainRight]=127;
+		wait1Msec(100);
+		motor[driveTrainRight]=0;
+		waitUntil(leftLineReached == true && rightLineReached == true);
+		stopTask(lineLeftTest);
+		stopTask(lineRightTest);
+		wait1Msec(500);
+
+		//go forward
+		strait(-050, -050);
 		wait1Msec(500);
 
 		//90 degree turn right
