@@ -52,8 +52,12 @@
 
 //Main competition background code...do not modify!
 #include "Vex_Competition_Includes.c"
+
+//Skills Autonomous
 #include "autonomous1.c"
 
+//Match Autonomous
+#include "autonomous2.c"
 
 int Program = 1;
 
@@ -108,7 +112,7 @@ void pre_auton()
 		if (nLCDButtons == rightButton) { //cycles pnumatics
 			if(SensorValue[extendConeLift] == 1){
 				SensorValue[extendConeLift] = 0;
-			}else{
+				}else{
 				SensorValue[extendConeLift] = 1;
 			}
 
@@ -190,31 +194,37 @@ task autonomous()
 	if(Program == 1){
 		autonomous1();
 		}else if (Program == 2){
+		autonomous2();
 
-		//////////////////////////////////////////////////
-		//            testing zone for now             //
-		/////////////////////////////////////////////////
-
-			displayLCDCenteredString(0, "Test autonomous");
-			displayLCDCenteredString(1, "running...");
-
-			if (SensorValue[coneGate] == 1)
-      {
-        SensorValue[coneGate] = 0;
-      }
-      else
-      {
-        SensorValue[coneGate] = 1;
-      }
-
-			displayLCDCenteredString(0, "Test autonomous");
-			displayLCDCenteredString(1, "Done!");
-
-		//////////////////////////////////////////////////
 		}else if (Program == 3){
+			////////////////////////////////////////////////////
+			//																								//
+			//									Test Code											//
+			//																								//
+			////////////////////////////////////////////////////
 
+		//Lower cone arms
+		motor[liftConeLeft] = -127;
+		motor[liftConeRight] = -127;
+		waitUntil(SensorValue[coneAngleLeft] < 800);
+		motor[liftConeLeft] = 0;
+		waitUntil(SensorValue[coneAngleRight] < 800);
+		motor[liftConeRight] = 0;
+		wait1Msec(0);
 
-		}
+		//Release cone
+		motor[coneIntake]  = -127;
+		wait1Msec(100);
+		motor[coneIntake]	=	0;
+
+		motor[liftConeLeft] = 127;
+		motor[liftConeRight] = 127;
+		waitUntil(SensorValue[coneAngleLeft] > 1250);
+		motor[liftConeLeft] = 0;
+		waitUntil(SensorValue[coneAngleRight] > 1150);
+		motor[liftConeRight] = 0;
+
+	}
 
 
 
@@ -289,7 +299,7 @@ task usercontrol()
 
 			startTask(leftLowLiftDown);
 			startTask(rightLowLiftDown);
-			}
+		}
 
 
 
@@ -299,7 +309,7 @@ task usercontrol()
 		}
 		else if(vexRT[Btn7D]){
 			highLift(1, 127);
-		}else if(vexRT(Btn7L)){
+			}else if(vexRT(Btn7L)){
 			highLift(2, 127);
 		}
 
@@ -329,12 +339,12 @@ task usercontrol()
 
 
 
-		if(vexRT[Btn8D] == 1 && coneGate == false){
+		if(vexRT[Btn8L] == 1 && coneGate == false){
 			//Activates Cone Lift Pneumatics
 			SensorValue[dgtl3] = 0;
 			coneGate = true;
 		}
-		else if(vexRT[Btn8D] == 1 && coneGate == true){
+		if(vexRT[Btn8D] == 1 && coneGate == true){
 			//Deactivates Cone Lift Pneumatics
 			SensorValue[dgtl3] = 1;
 			coneGate = false;
@@ -366,5 +376,3 @@ task usercontrol()
 		}
 	}
 }
-
-//Pat was here
