@@ -2,10 +2,19 @@
  *
  * This program run the robot autonomously
  * game type: match(red)
+ *
+ * THIS AUTO PROGRAM IS NOT TESTED YET. STEPS TO PREPARE PROGRAM:
+ * DONE 1. Copy all code over from auto 2 (match blue)
+ * DONE 2. Flip all necessary turn and drive values
+ * DONE 3. Adjust final two 90 degree turns (First needs to be a little larger, second needs to be a little smaller)
+ * 4. Run actual tests and adjust any values
  */
 //#include "tasks-test.c"
 #include "tasks.c"
 void autonomous3(){
+
+	// const timer
+	int waitTime = 3000; // time is in miliSec
 
 	leftLineReached = false;
 	rightLineReached = false;
@@ -30,21 +39,28 @@ void autonomous3(){
 
 		//when it picks up the goal
 		waitUntil(SensorValue[mobleGoalHigher] == 1);
-		wait1Msec(050);
+		wait1Msec(150);
+
 		motor[driveTrainLeft] = 0;
 		motor[driveTrainRight] = 0;
+		wait1Msec(400);
+
+		//Short cotinue forward
+		motor[driveTrainLeft] = -40;
+		motor[driveTrainRight] = -40;
 
 		motor[liftMobileHigherLeft] = 127;
 		motor[liftMobileHigherRight] = 127;
 
-		wait1Msec(350);
 		SensorValue[dgtl3] = 1;
+		wait1Msec(250);
+
 
 			//when the goal is lifted- cut the motors
 		highLift(3, 127);
 
 		//Backward
-		strait(500, 500);
+		strait(300, 300);
 
 		motor[driveTrainLeft]=-127;
 		motor[driveTrainRight]=-127;
@@ -92,8 +108,8 @@ void autonomous3(){
 		wait1Msec(500);
 
 		//45 degree turn left
-		turnRight(80, -80);
-		wait1Msec(1500);
+		turnRight(125, -125);
+		wait1Msec(1000);
 
 		//start going forward
 		motor[driveTrainLeft]=127;
@@ -107,7 +123,7 @@ void autonomous3(){
 		wait1Msec(1200);
 
 		//Backward
-		strait(500, 500);
+		strait(750, 750);
 
 		motor[driveTrainLeft]=-127;
 		motor[driveTrainRight]=-127;
@@ -142,19 +158,19 @@ void autonomous3(){
 		wait1Msec(500);
 
 		//go forward
-		strait(-050, -050);
+		strait(-010, -010);
 		wait1Msec(500);
 
-		//90 degree turn left
-		turnRight(475, -475);
+		//>90 degree turn left
+		turnRight(350, -350);
 		wait1Msec(500);
 
 		//go forward
-		strait(-500, -500);
+		strait(-175, -175);
 		wait1Msec(500);
 
-		//90 degree turn left
-		turnRight(475, -475);
+		//<90 degree turn left
+		turnRight(300, -300);
 		wait1Msec(500);
 
 		//Score Preload Cone on Lower Mobile Goal
@@ -177,7 +193,11 @@ void autonomous3(){
 		//forward to score the moble goals
 		motor[driveTrainLeft] = 127;
 		motor[driveTrainRight] = 127;
-		waitUntil(SensorValue[pipeSensor] == 1);
+
+		// restart timer
+		clearTimer(T1);
+		waitUntil(SensorValue[pipeSensor] == 1 || time1[T1] < waitTime ); // or less than a certain amount of time
+
 		motor[driveTrainLeft] = 0;
 		motor[driveTrainRight] = 0;
 		motor[liftMobileHigherLeft] = -127;

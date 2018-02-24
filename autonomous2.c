@@ -7,6 +7,9 @@
  */
 void autonomous2(){
 
+	// const timer
+	int waitTime = 3000; // time is in miliSec
+
 	leftLineReached = false;
 	rightLineReached = false;
 	SensorValue[dgtl6] = 0;
@@ -35,11 +38,14 @@ void autonomous2(){
 		motor[driveTrainLeft] = 0;
 		motor[driveTrainRight] = 0;
 		wait1Msec(400);
+
+		//Short cotinue forward
 		motor[driveTrainLeft] = -40;
 		motor[driveTrainRight] = -40;
 
 		motor[liftMobileHigherLeft] = 127;
 		motor[liftMobileHigherRight] = 127;
+
 		SensorValue[dgtl3] = 1;
 		wait1Msec(250);
 
@@ -149,7 +155,7 @@ void autonomous2(){
 		strait(-010, -010);
 		wait1Msec(500);
 
-		//90 degree turn right
+		//>90 degree turn right
 		turnRight(-350, 350);
 		wait1Msec(500);
 
@@ -157,7 +163,7 @@ void autonomous2(){
 		strait(-175, -175);
 		wait1Msec(500);
 
-		//90 degree turn right
+		//<90 degree turn right
 		turnRight(-300, 300);
 		wait1Msec(500);
 
@@ -181,7 +187,11 @@ void autonomous2(){
 		//forward to score the moble goals
 		motor[driveTrainLeft] = 127;
 		motor[driveTrainRight] = 127;
-		waitUntil(SensorValue[pipeSensor] == 1);
+
+		// restart timer
+		clearTimer(T1);
+		waitUntil(SensorValue[pipeSensor] == 1 || time1[T1] < waitTime ); // or less than a certain amount of time
+
 		motor[driveTrainLeft] = 0;
 		motor[driveTrainRight] = 0;
 		motor[liftMobileHigherLeft] = -127;
