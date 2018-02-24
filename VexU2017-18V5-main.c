@@ -81,6 +81,7 @@ int Program = 1;
 
 void pre_auton()
 {
+	/*******/
 
 	SensorValue[leftEncoder] =0;
 	SensorValue[rightEncoder] =0;
@@ -97,17 +98,19 @@ void pre_auton()
 	int lcdScreenMax = 4;
 	//Turns on the Backlight
 	bLCDBacklight = true;
+	bool state = true;
 
 
 	const short leftButton = 1;
 	const short centerButton = 2;
 	const short rightButton = 4;
 
-	while (bIfiRobotDisabled == 1) { //Ensures this code will run ONLY when the robot is disabled
+	while (state == true) { //Ensures this code will run ONLY when the robot is disabled
 		if (nLCDButtons == leftButton) { //Scrolls to the left
 			if (lcdScreenMin == lcdScreen) {
 				lcdScreen = lcdScreenMax;
 				wait1Msec(250);
+
 				} else {
 				lcdScreen --;
 				wait1Msec(250);
@@ -115,18 +118,17 @@ void pre_auton()
 		}
 
 
+		// pneumatic cyce button
+
 		if (nLCDButtons == rightButton) { //cycles pnumatics
+
 			if(SensorValue[extendConeLift] == 1){
 				SensorValue[extendConeLift] = 0;
 				}else{
 				SensorValue[extendConeLift] = 1;
 			}
 
-
-
-
-
-		}
+		}// end rightbutton press
 
 
 
@@ -136,12 +138,14 @@ void pre_auton()
 			displayLCDCenteredString (1, "1"); //Name the first program here
 
 			if (nLCDButtons == centerButton) {
+				state = false;// out of preauton
 				Program = lcdScreen; //Sets the Program to the one on-screen
-				displayLCDCenteredString (0, "Autonomous Has");
-				displayLCDCenteredString (1, "Been Selected!");
+				//displayLCDCenteredString (0, "Skills Has");
+				//displayLCDCenteredString (1, "Been Selected!");
 				wait1Msec(1500);
 			}
-			} else if (lcdScreen == 1 && Program == 1) {
+			}
+			 if (lcdScreen == 1 && Program == 1) {
 			displayLCDCenteredString (0, "Skills"); //We use brackets to mark which program we have chosen
 			displayLCDCenteredString (1, "[1]"); //So that while we're scrolling, we can have one marked
 
@@ -153,8 +157,9 @@ void pre_auton()
 			displayLCDCenteredString (1, "2"); //Name the second program here
 
 			if (nLCDButtons == centerButton) {
+				state = false;// out of preauton
 				Program = lcdScreen; //Sets the Program to the one on-screen
-				displayLCDCenteredString (0, "Autonomous Has");
+				displayLCDCenteredString (0, "Match Blue Has");
 				displayLCDCenteredString (1, "Been Selected!");
 				wait1Msec(1500);
 			}
@@ -170,8 +175,9 @@ void pre_auton()
 			displayLCDCenteredString (1, "3"); //Name the third program here
 
 			if (nLCDButtons == centerButton) {
+				state = false;// out of preauton
 				Program = lcdScreen; //Sets the Program to the one on-screen
-				displayLCDCenteredString (0, "Autonomous Has");
+				displayLCDCenteredString (0, "Match Red Has");
 				displayLCDCenteredString (1, "Been Selected!");
 				wait1Msec(1500);
 			}
@@ -188,8 +194,9 @@ void pre_auton()
 			displayLCDCenteredString (1, "4"); //Name the fourth program here
 
 			if (nLCDButtons == centerButton) {
+				state = false;// out of preauton
 				Program = lcdScreen; //Sets the Program to the one on-screen
-				displayLCDCenteredString (0, "Autonomous Has");
+				displayLCDCenteredString (0, "Test Has");
 				displayLCDCenteredString (1, "Been Selected!");
 				wait1Msec(1500);
 			}
@@ -198,6 +205,16 @@ void pre_auton()
 			displayLCDCenteredString (1, "[4]"); //So that while we're scrolling, we can have one marked
 		}
 	}
+
+
+
+
+/************/
+}
+
+void preAuto(void){
+
+
 }
 
 /*---------------------------------------------------------------------------*/
@@ -234,7 +251,6 @@ task autonomous(){
 
 task usercontrol()
 {
-
 
 	//logic variables
 

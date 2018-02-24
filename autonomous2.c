@@ -30,21 +30,25 @@ void autonomous2(){
 
 		//when it picks up the goal
 		waitUntil(SensorValue[mobleGoalHigher] == 1);
-		wait1Msec(050);
+		wait1Msec(150);
+
 		motor[driveTrainLeft] = 0;
 		motor[driveTrainRight] = 0;
+		wait1Msec(400);
+		motor[driveTrainLeft] = -40;
+		motor[driveTrainRight] = -40;
 
 		motor[liftMobileHigherLeft] = 127;
 		motor[liftMobileHigherRight] = 127;
-
-		wait1Msec(350);
 		SensorValue[dgtl3] = 1;
+		wait1Msec(250);
+
 
 			//when the goal is lifted- cut the motors
 		highLift(3, 127);
 
 		//Backward
-		strait(500, 500);
+		strait(300, 300);
 
 		motor[driveTrainLeft]=-127;
 		motor[driveTrainRight]=-127;
@@ -92,8 +96,8 @@ void autonomous2(){
 		wait1Msec(500);
 
 		//45 degree turn right
-		turnRight(-80, 80);
-		wait1Msec(1500);
+		turnRight(-125, 125);
+		wait1Msec(1000);
 
 		//start going forward
 		motor[driveTrainLeft]=127;
@@ -107,7 +111,7 @@ void autonomous2(){
 		wait1Msec(1200);
 
 		//Backward
-		strait(500, 500);
+		strait(750, 750);
 
 		motor[driveTrainLeft]=-127;
 		motor[driveTrainRight]=-127;
@@ -142,19 +146,19 @@ void autonomous2(){
 		wait1Msec(500);
 
 		//go forward
-		strait(-050, -050);
+		strait(-010, -010);
 		wait1Msec(500);
 
 		//90 degree turn right
-		turnRight(-475, 475);
+		turnRight(-350, 350);
 		wait1Msec(500);
 
 		//go forward
-		strait(-500, -500);
+		strait(-175, -175);
 		wait1Msec(500);
 
 		//90 degree turn right
-		turnRight(-475, 475);
+		turnRight(-300, 300);
 		wait1Msec(500);
 
 		//Score Preload Cone on Lower Mobile Goal

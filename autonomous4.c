@@ -2,24 +2,43 @@
 #include "tasks.c"
 void autonomous4(){
 
-		//Lower cone arms
-		motor[liftConeLeft] = -127;
-		motor[liftConeRight] = -127;
-		waitUntil(SensorValue[coneAngleLeft] < 800);
-		motor[liftConeLeft] = 0;
-		waitUntil(SensorValue[coneAngleRight] < 800);
-		motor[liftConeRight] = 0;
-		wait1Msec(0);
 
-		//Release cone
-		motor[coneIntake]  = -127;
-		wait1Msec(100);
-		motor[coneIntake]	=	0;
+			//90 degree turn right
+		turnRight(-275, 275);
+		wait1Msec(500);
 
-		motor[liftConeLeft] = 127;
-		motor[liftConeRight] = 127;
-		waitUntil(SensorValue[coneAngleLeft] > 1250);
-		motor[liftConeLeft] = 0;
-		waitUntil(SensorValue[coneAngleRight] > 1150);
-		motor[liftConeRight] = 0;
+
+			//go forward
+		strait(-260, -260);
+		wait1Msec(500);
+
+			//45 degree turn right
+		turnRight(-250, 250);
+		wait1Msec(500);
+
+			//when it picks up the goal
+		waitUntil(SensorValue[mobleGoalHigher] == 1);
+		motor[driveTrainLeft] = 0;
+		motor[driveTrainRight] = 0;
+		motor[liftMobileHigherLeft] = 127;
+		motor[liftMobileHigherRight] = 127;
+		wait1Msec(250);
+		SensorValue[dgtl3] = 1;
+
+			//45 degree turn right
+		turnRight(-250, 250);
+		wait1Msec(500);
+
+			//go forward
+		strait(-100, -100);
+		wait1Msec(500);
+
+		//wait until lower the lower goal is ready
+		waitUntil(SensorValue[mobleGoalLower] == 1);
+		startTask(LowLiftUp);
+		motor[driveTrainLeft]=0;
+		motor[driveTrainRight]=0;
+		wait1Msec(250);
+		SensorValue[dgtl3] = 1;
+
 	}
