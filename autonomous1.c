@@ -1,4 +1,6 @@
+//#include "tasks-test.c"
 #include "tasks.c"
+
 
 void autonomous1(){
 
@@ -72,6 +74,22 @@ void autonomous1(){
 		turnRight(-250, 250);
 		wait1Msec(500);
 
+		//Score Preload Cone on Lower Mobile Goal
+		motor[liftConeLeft] = -127;
+		motor[liftConeRight] = -127;
+		waitUntil(SensorValue[coneAngleLeft] < 400);
+		motor[liftConeLeft] = 0;
+		waitUntil(SensorValue[coneAngleRight] < 400);
+		motor[liftConeRight] = 0;
+		wait1Msec(500);
+		motor[coneIntake] = -127;
+		motor[liftConeLeft] = 127;
+		motor[liftConeRight] = 127;
+		waitUntil(SensorValue[coneAngleLeft] > 1250);
+		motor[liftConeLeft] = 0;
+		waitUntil(SensorValue[coneAngleRight] > 1150);
+		motor[liftConeRight] = 0;
+		motor[coneIntake] = 0;
 
 		//forward to score the moble goals
 		motor[driveTrainLeft] = 127;

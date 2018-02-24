@@ -56,8 +56,14 @@
 //Skills Autonomous
 #include "autonomous1.c"
 
-//Match Autonomous
+//Match Autonomous Blue
 #include "autonomous2.c"
+
+//Match Autonomous Red
+#include "autonomous3.c"
+
+//Match Autonomous Red
+#include "autonomous4.c"
 
 int Program = 1;
 
@@ -88,7 +94,7 @@ void pre_auton()
 	//This keeps track of which program you want to run
 	int lcdScreen = 1;
 	//Change this value to be the maximum number of programs you want on the robot
-	int lcdScreenMax = 2;
+	int lcdScreenMax = 4;
 	//Turns on the Backlight
 	bLCDBacklight = true;
 
@@ -126,8 +132,9 @@ void pre_auton()
 
 
 		if (lcdScreen == 1 && Program != 1) {
-			displayLCDCenteredString (0, "Program"); //Name the first program here
+			displayLCDCenteredString (0, "Skills"); //Name the first program here
 			displayLCDCenteredString (1, "1"); //Name the first program here
+
 			if (nLCDButtons == centerButton) {
 				Program = lcdScreen; //Sets the Program to the one on-screen
 				displayLCDCenteredString (0, "Autonomous Has");
@@ -135,11 +142,16 @@ void pre_auton()
 				wait1Msec(1500);
 			}
 			} else if (lcdScreen == 1 && Program == 1) {
-			displayLCDCenteredString (0, "Program"); //We use brackets to mark which program we have chosen
+			displayLCDCenteredString (0, "Skills"); //We use brackets to mark which program we have chosen
 			displayLCDCenteredString (1, "[1]"); //So that while we're scrolling, we can have one marked
+
+
+
+
 			} else if (lcdScreen == 2 && Program != 2) {
-			displayLCDCenteredString (0, "Program"); //Name the second program here
+			displayLCDCenteredString (0, "Match Blue"); //Name the second program here
 			displayLCDCenteredString (1, "2"); //Name the second program here
+
 			if (nLCDButtons == centerButton) {
 				Program = lcdScreen; //Sets the Program to the one on-screen
 				displayLCDCenteredString (0, "Autonomous Has");
@@ -147,11 +159,16 @@ void pre_auton()
 				wait1Msec(1500);
 			}
 			} else if (lcdScreen == 2 && Program == 2) {
-			displayLCDCenteredString (0, "Program"); //We use brackets to mark which program we have chosen
+			displayLCDCenteredString (0, "Match Blue"); //We use brackets to mark which program we have chosen
 			displayLCDCenteredString (1, "[2]"); //So that while we're scrolling, we can have one marked
+
+
+
+
 			} else if (lcdScreen == 3 && Program != 3) {
-			displayLCDCenteredString (0, "Pneumatics"); //Name the third program here
+			displayLCDCenteredString (0, "Match Red"); //Name the third program here
 			displayLCDCenteredString (1, "3"); //Name the third program here
+
 			if (nLCDButtons == centerButton) {
 				Program = lcdScreen; //Sets the Program to the one on-screen
 				displayLCDCenteredString (0, "Autonomous Has");
@@ -159,11 +176,17 @@ void pre_auton()
 				wait1Msec(1500);
 			}
 			} else if (lcdScreen == 3 && Program == 3) {
-			displayLCDCenteredString (0, "Pneumatics"); //We use brackets to mark which program we have chosen
+			displayLCDCenteredString (0, "Match Red"); //We use brackets to mark which program we have chosen
 			displayLCDCenteredString (1, "[3]"); //So that while we're scrolling, we can have one marked
+
+
+
+
+
 			} else if (lcdScreen == 4 && Program != 4) {
-			displayLCDCenteredString (0, "Program"); //Name the fourth program here
+			displayLCDCenteredString (0, "Test"); //Name the fourth program here
 			displayLCDCenteredString (1, "4"); //Name the fourth program here
+
 			if (nLCDButtons == centerButton) {
 				Program = lcdScreen; //Sets the Program to the one on-screen
 				displayLCDCenteredString (0, "Autonomous Has");
@@ -171,11 +194,10 @@ void pre_auton()
 				wait1Msec(1500);
 			}
 			} else if (lcdScreen == 4 && Program == 4) {
-			displayLCDCenteredString (0, "Program"); //We use brackets to mark which program we have chosen
+			displayLCDCenteredString (0, "Test"); //We use brackets to mark which program we have chosen
 			displayLCDCenteredString (1, "[4]"); //So that while we're scrolling, we can have one marked
 		}
 	}
-
 }
 
 /*---------------------------------------------------------------------------*/
@@ -188,45 +210,15 @@ void pre_auton()
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
-task autonomous()
-{
+task autonomous(){
 
-	if(Program == 1){
-		autonomous1();
-		}else if (Program == 2){
-		autonomous2();
+	if(Program == 1)        {	autonomous1();	}
 
-		}else if (Program == 3){
-			////////////////////////////////////////////////////
-			//																								//
-			//									Test Code											//
-			//																								//
-			////////////////////////////////////////////////////
+		else if (Program == 2){	autonomous2();	}
 
-		//Lower cone arms
-		motor[liftConeLeft] = -127;
-		motor[liftConeRight] = -127;
-		waitUntil(SensorValue[coneAngleLeft] < 800);
-		motor[liftConeLeft] = 0;
-		waitUntil(SensorValue[coneAngleRight] < 800);
-		motor[liftConeRight] = 0;
-		wait1Msec(0);
+		else if (Program == 3){	autonomous3();	}
 
-		//Release cone
-		motor[coneIntake]  = -127;
-		wait1Msec(100);
-		motor[coneIntake]	=	0;
-
-		motor[liftConeLeft] = 127;
-		motor[liftConeRight] = 127;
-		waitUntil(SensorValue[coneAngleLeft] > 1250);
-		motor[liftConeLeft] = 0;
-		waitUntil(SensorValue[coneAngleRight] > 1150);
-		motor[liftConeRight] = 0;
-
-	}
-
-
+	  else if (Program == 4){	autonomous4();	}
 
 }
 

@@ -1,11 +1,11 @@
-//#include "tasks-test.c"
-#include "tasks.c"
 /**
  *
  * This program run the robot autonomously
- * game type: match(blue)
+ * game type: match(red)
  */
-void autonomous2(){
+//#include "tasks-test.c"
+#include "tasks.c"
+void autonomous3(){
 
 	leftLineReached = false;
 	rightLineReached = false;
@@ -82,24 +82,24 @@ void autonomous2(){
 		strait(-070, -070);
 		wait1Msec(500);
 
-		//90 degree turn left
+		//90 degree turn right
 		//(left target, right target)
-		turnLeft(300, -300);
+		turnLeft(-300, 300);
 		wait1Msec(500);
 
 		//go forward
 		strait(-900, -900);
 		wait1Msec(500);
 
-		//45 degree turn right
-		turnRight(-80, 80);
+		//45 degree turn left
+		turnRight(80, -80);
 		wait1Msec(1500);
 
 		//start going forward
 		motor[driveTrainLeft]=127;
 		motor[driveTrainRight]=127;
 
-		//wait until lower the lower goal is ready
+		//wait until lower the lower mobile goal is ready
 		waitUntil(SensorValue[mobleGoalLower] == 1);
 		startTask(LowLiftUp);
 		motor[driveTrainLeft]=0;
@@ -145,16 +145,16 @@ void autonomous2(){
 		strait(-050, -050);
 		wait1Msec(500);
 
-		//90 degree turn right
-		turnRight(-475, 475);
+		//90 degree turn left
+		turnRight(475, -475);
 		wait1Msec(500);
 
 		//go forward
 		strait(-500, -500);
 		wait1Msec(500);
 
-		//90 degree turn right
-		turnRight(-475, 475);
+		//90 degree turn left
+		turnRight(475, -475);
 		wait1Msec(500);
 
 		//Score Preload Cone on Lower Mobile Goal
