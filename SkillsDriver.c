@@ -1,42 +1,38 @@
+#include "PotSensors.c"
+#include "encoderTasks.c"
 task usercontrol()
 {
 	while(true){
 
+	displayLCDCenteredString(0, "SkyNet");
+	displayLCDCenteredString(1, "Running...");
 
 	//drive controls
-		//right side-right joystick is Ch2
-		motor[RightDrive1] = vexRT[Ch2];
-		motor[RightDrive2] = vexRT[Ch2];
+	//left
+	motor[LeftDrive1] =  vexRT[Ch3];
+	motor[LeftDrive2] =  vexRT[Ch3];
+	motor[LeftDrive3] =  vexRT[Ch3];
+	//right
+	motor[RightDrive1] = (vexRT[Ch2]);
+	motor[RightDrive2] = (vexRT[Ch2]);
+	motor[RightDrive3] = (vexRT[Ch2]);
 
-		//left side-left joystick is Ch3
-		motor[LeftDrive1] = vexRT[Ch3];
-		motor[RightDrive2] = vexRT[Ch3];
-
-
-		//High lift
+	//High lift
 		if(vexRT[Btn6U]){
 			//goes up
-
-			//left
-			if(SensorValue[PotemtiometerLeft] < 3200)
-  			motor[LeftUpperMG] = 0;
-			else
-  			motor[LeftUpperMG] = 127;
-
-  		//right
-  		if (SensorValue[PotentiometerRight] > 4080)
-      	motor[RightUpperMG] = 0;
-    	else
-     	 motor[RightUpperMG] = 127;
+				startTask(rightPotSensor);
+				startTask(leftPotSensor);
 		}else if(vexRT[Btn6D]){
-
 			//goes down
-  			motor[LeftUpperMG] = -127;
-      	motor[RightUpperMG] = -127;
-		}else	{
+				startTask(rightPotSensor);
+				startTask(leftPotSensor);
+		}else{
+			stopTask(rightPotSensor);
+			stopTask(leftPotSensor);
 			motor[RightUpperMG] = 0;
 			motor[LeftUpperMG] = 0;
 		}
+
 
 
 	//low lift
@@ -68,15 +64,26 @@ task usercontrol()
 		}
 
 
+		//7 buttons
+		if(vexRT[Btn7D]){
+		SensorValue[leftEncoder] = 0;
+		SensorValue[rightEncoder] = 0;
+		}
 
+		if(vexRT[Btn7L]){
+		turnLeft(250, 250);
+		}
 
+		if(vexRT[Btn7R]){
+		turnRight(250,250);
+		}
 
-
-	//cone eject
+	//mobile goal eject
 	if(vexRT[Btn8D]){
+
 		//extend the pistons
 		SensorValue[ConeEject] = 1;
-		wait1Msec(1000);
+		wait1Msec(10);
 		//retract the pistons
 		SensorValue[ConeEject] = 0;
 	}
