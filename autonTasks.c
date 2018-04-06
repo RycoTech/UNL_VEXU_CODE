@@ -58,12 +58,13 @@ task rightLiftDown(){
 
 
 task lineLeftTest(){
-	rightLineReached = false;
+	leftLineReached = false;
 while(true){
   	if(SensorValue[LineFollowLeft] < 2000){
  		motor[LeftDrive1] =  0;
 		motor[LeftDrive2] =  0;
-		rightLineReached = true;
+		motor[LeftDrive3] =  0;
+		leftLineReached = true;
  			stopTask(lineLeftTest);
 		}
 		wait1Msec(1);
@@ -76,13 +77,13 @@ while(true){
 
 
 task lineRightTest(){
-leftLineReached = false;
+rightLineReached = false;
 	while(true){
   	if(SensorValue[LineFollowRight] < 2000){
  				motor[RightDrive1] = 0;
 				motor[RightDrive2] = 0;
 				motor[RightDrive3] = 0;
-				leftLineReached = true;
+				rightLineReached = true;
  			stopTask(lineRightTest);
 		}
 		wait1Msec(1);

@@ -78,6 +78,10 @@ task usercontrol()
 		turnRight(250,250);
 		}
 
+		if(vexRT[Btn7D]){
+		strait(-425,-425);
+		}
+
 	//mobile goal eject
 	if(vexRT[Btn8D]){
 

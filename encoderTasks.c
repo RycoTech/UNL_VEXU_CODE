@@ -125,7 +125,7 @@ void strait(int leftTarget, int rightTarget){
 		rightEncoderTarget = rightTarget;
 		leftEncoderTarget = leftTarget;
 
-		if(leftTarget < 0 && rightTarget < 0){
+		if(leftTarget > 0 && rightTarget > 0){
 		//set motors in proper direction
 		motor[LeftDrive1] =  127;
 		motor[LeftDrive2] =  127;
@@ -143,7 +143,7 @@ void strait(int leftTarget, int rightTarget){
 		stopTask(leftForwardEncoderTest);
 		return;
 	}
-	else if(leftTarget > 0 && rightTarget > 0)
+	else if(leftTarget < 0 && rightTarget < 0)
 		//set motors in proper direction
 		motor[LeftDrive1] =  -127;
 		motor[LeftDrive2] =  -127;
