@@ -4,7 +4,7 @@ task usercontrol()
 {
 	while(true){
 
-	displayLCDCenteredString(0, "SkyNet");
+	displayLCDCenteredString(0, "Robot");
 	displayLCDCenteredString(1, "Running...");
 
 	//drive controls
